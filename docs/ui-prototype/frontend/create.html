@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>创作中心 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .content-area {
+            padding-bottom: calc(64px + env(safe-area-inset-bottom));
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <div class="px-4 py-3 flex items-center justify-between bg-transparent">
+        <span class="text-xl font-medium gradient-text">创作中心</span>
+        <a href="my-drafts.html" class="p-2 bg-white/10 rounded-full">
+            <i class="fas fa-file-alt text-white/80"></i>
+        </a>
+    </div>
+
+    <!-- 主要内容区 -->
+    <div class="content-area p-4">
+        <!-- 快速创作选项 -->
+        <h2 class="text-white font-bold text-lg mb-4">开始创作</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <a href="camera.html" class="block bg-gradient-to-br from-blue-600/40 to-blue-800/40 rounded-xl p-4 text-center">
+                <div class="bg-blue-500/30 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                    <i class="fas fa-video text-blue-400 text-2xl"></i>
+                </div>
+                <p class="text-white">拍摄视频</p>
+            </a>
+            <a href="album.html" class="block bg-gradient-to-br from-green-600/40 to-green-800/40 rounded-xl p-4 text-center">
+                <div class="bg-green-500/30 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                    <i class="fas fa-images text-green-400 text-2xl"></i>
+                </div>
+                <p class="text-white">从相册选择</p>
+            </a>
+        </div>
+
+        <!-- 快速编辑工具 -->
+        <h2 class="text-white font-bold text-lg mt-8 mb-4">快速编辑</h2>
+        <div class="grid grid-cols-3 gap-4">
+            <a href="text-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-purple-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-font text-purple-400"></i>
+                </div>
+                <p class="text-white text-sm">文字</p>
+            </a>
+            <a href="sticker-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-yellow-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-smile text-yellow-400"></i>
+                </div>
+                <p class="text-white text-sm">贴纸</p>
+            </a>
+            <a href="transition-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-blue-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-random text-blue-400"></i>
+                </div>
+                <p class="text-white text-sm">转场</p>
+            </a>
+            <a href="music-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-red-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-music text-red-400"></i>
+                </div>
+                <p class="text-white text-sm">音乐</p>
+            </a>
+            <a href="pip-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-indigo-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-clone text-indigo-400"></i>
+                </div>
+                <p class="text-white text-sm">画中画</p>
+            </a>
+            <a href="filter-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-green-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-adjust text-green-400"></i>
+                </div>
+                <p class="text-white text-sm">滤镜</p>
+            </a>
+            <a href="effect-editor.html" class="block bg-gray-800 rounded-xl p-3 text-center">
+                <div class="bg-orange-500/20 w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-2">
+                    <i class="fas fa-magic text-orange-400"></i>
+                </div>
+                <p class="text-white text-sm">特效</p>
+            </a>
+        </div>
+
+        <!-- 模板推荐 -->
+        <h2 class="text-white font-bold text-lg mt-8 mb-4">推荐模板</h2>
+        <div class="overflow-x-auto flex space-x-4 no-scrollbar pb-2">
+            <a href="template-detail.html?id=1" class="flex-shrink-0 w-40 bg-gray-800 rounded-lg overflow-hidden">
+                <img src="https://pic.51yuansu.com/pic3/cover/00/70/94/5929b4e02d84c_610.jpg" alt="商务模板" class="w-full h-24 object-cover">
+                <div class="p-2">
+                    <h3 class="text-white text-sm font-medium truncate">商务展示模板</h3>
+                    <p class="text-blue-400 text-xs mt-1">立即使用</p>
+                </div>
+            </a>
+            <a href="template-detail.html?id=2" class="flex-shrink-0 w-40 bg-gray-800 rounded-lg overflow-hidden">
+                <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="旅行模板" class="w-full h-24 object-cover">
+                <div class="p-2">
+                    <h3 class="text-white text-sm font-medium truncate">旅行日记模板</h3>
+                    <p class="text-blue-400 text-xs mt-1">立即使用</p>
+                </div>
+            </a>
+            <a href="template-detail.html?id=3" class="flex-shrink-0 w-40 bg-gray-800 rounded-lg overflow-hidden">
+                <img src="https://pic.51yuansu.com/pic3/cover/03/51/14/5bb732c18b92f_610.jpg" alt="音乐模板" class="w-full h-24 object-cover">
+                <div class="p-2">
+                    <h3 class="text-white text-sm font-medium truncate">音乐视频模板</h3>
+                    <p class="text-blue-400 text-xs mt-1">立即使用</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 py-2 px-4 flex justify-between items-center border-t border-gray-800">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="discover.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1">发现</span>
+        </a>
+        <a href="create.html" class="flex flex-col items-center text-blue-500">
+            <i class="fas fa-plus-circle text-xl"></i>
+            <span class="text-xs mt-1">创作</span>
+        </a>
+        <a href="my-profile.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">我的</span>
+        </a>
+    </div>
+</body>
+</html> 

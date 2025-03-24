@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据统计 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #f0f2f5;
+        }
+        .sidebar {
+            background: #001529;
+            min-height: 100vh;
+        }
+        .chart-container {
+            height: 300px;
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        .chart-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chart-bar {
+            background: linear-gradient(to top, #4299e1, #63b3ed);
+            border-radius: 3px 3px 0 0;
+            width: 30px;
+            position: absolute;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="flex">
+        <!-- 侧边栏 -->
+        <div class="sidebar w-64 flex-shrink-0">
+            <div class="p-4 text-center">
+                <h1 class="text-white text-xl font-bold">视频编辑器</h1>
+                <p class="text-gray-400 text-xs mt-1">管理控制台</p>
+            </div>
+            <div class="mt-6">
+                <a href="dashboard.html" class="px-4 py-3 text-gray-400 hover:bg-gray-800 flex items-center">
+                    <i class="fas fa-tachometer-alt w-6"></i>
+                    <span>控制台首页</span>
+                </a>
+                <a href="users.html" class="px-4 py-3 text-gray-400 hover:bg-gray-800 flex items-center">
+                    <i class="fas fa-users w-6"></i>
+                    <span>用户管理</span>
+                </a>
+                <a href="templates.html" class="px-4 py-3 text-gray-400 hover:bg-gray-800 flex items-center">
+                    <i class="fas fa-layer-group w-6"></i>
+                    <span>模板管理</span>
+                </a>
+                <a href="videos.html" class="px-4 py-3 text-gray-400 hover:bg-gray-800 flex items-center">
+                    <i class="fas fa-film w-6"></i>
+                    <span>视频管理</span>
+                </a>
+                <a href="statistics.html" class="px-4 py-3 bg-blue-800 text-white flex items-center">
+                    <i class="fas fa-chart-bar w-6"></i>
+                    <span>数据统计</span>
+                </a>
+                <a href="settings.html" class="px-4 py-3 text-gray-400 hover:bg-gray-800 flex items-center">
+                    <i class="fas fa-cog w-6"></i>
+                    <span>系统设置</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="flex-1">
+            <!-- 顶部导航 -->
+            <div class="bg-white p-4 shadow flex justify-between items-center">
+                <button class="text-gray-600">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <div class="flex items-center">
+                        <img src="https://img.zcool.cn/community/01d5a358177ef4a84a0d304f915d7b.jpg" alt="管理员头像" class="w-8 h-8 rounded-full">
+                        <span class="ml-2">管理员</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 页面内容 -->
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">数据统计</h2>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 bg-white rounded shadow text-gray-600">
+                            今日
+                        </button>
+                        <button class="px-4 py-2 bg-white rounded shadow text-gray-600">
+                            本周
+                        </button>
+                        <button class="px-4 py-2 bg-blue-500 rounded shadow text-white">
+                            本月
+                        </button>
+                        <button class="px-4 py-2 bg-white rounded shadow text-gray-600">
+                            全年
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 数据卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                    <div class="bg-white p-4 rounded shadow">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-gray-500">累计用户</h3>
+                                <p class="text-2xl font-bold">1,286</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-blue-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-500 mt-2">
+                            <i class="fas fa-arrow-up"></i> 较上月增长 12%
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded shadow">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-gray-500">视频处理数</h3>
+                                <p class="text-2xl font-bold">3,542</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-film text-green-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-500 mt-2">
+                            <i class="fas fa-arrow-up"></i> 较上月增长 23%
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded shadow">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-gray-500">总模板数</h3>
+                                <p class="text-2xl font-bold">68</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-layer-group text-purple-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-500 mt-2">
+                            <i class="fas fa-arrow-up"></i> 较上月增长 8%
+                        </p>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded shadow">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="text-gray-500">转换率</h3>
+                                <p class="text-2xl font-bold">25%</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-percentage text-yellow-500"></i>
+                            </div>
+                        </div>
+                        <p class="text-sm text-green-500 mt-2">
+                            <i class="fas fa-arrow-up"></i> 较上月增长 3%
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 图表区域 -->
+                <div class="mb-6">
+                    <div class="bg-white p-4 rounded shadow">
+                        <h3 class="text-lg font-medium mb-4">用户增长趋势</h3>
+                        <div class="chart-container p-4">
+                            <!-- 这里使用简单的CSS模拟图表，实际项目中会用图表库 -->
+                            <div class="chart-placeholder">
+                                <div style="height:220px; width:100%; position:relative; border-bottom:1px solid #e2e8f0; border-left:1px solid #e2e8f0;">
+                                    <div class="chart-bar" style="height:120px; left:10%;"></div>
+                                    <div class="chart-bar" style="height:150px; left:20%;"></div>
+                                    <div class="chart-bar" style="height:100px; left:30%;"></div>
+                                    <div class="chart-bar" style="height:180px; left:40%;"></div>
+                                    <div class="chart-bar" style="height:140px; left:50%;"></div>
+                                    <div class="chart-bar" style="height:200px; left:60%;"></div>
+                                    <div class="chart-bar" style="height:160px; left:70%;"></div>
+                                    <div class="chart-bar" style="height:190px; left:80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center space-x-8 mt-2 text-sm text-gray-500">
+                            <span>1月</span>
+                            <span>2月</span>
+                            <span>3月</span>
+                            <span>4月</span>
+                            <span>5月</span>
+                            <span>6月</span>
+                            <span>7月</span>
+                            <span>8月</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 热门模板统计 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-4 rounded shadow">
+                        <h3 class="text-lg font-medium mb-4">热门模板排行</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center mr-3">1</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-blue-500 rounded-full" style="width: 85%"></div>
+                                        <span class="ml-2 text-sm">85%</span>
+                                    </div>
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-sm">商务展示模板</span>
+                                        <span class="text-sm text-gray-500">1.2k 次使用</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-gray-500 text-white flex items-center justify-center mr-3">2</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-gray-500 rounded-full" style="width: 72%"></div>
+                                        <span class="ml-2 text-sm">72%</span>
+                                    </div>
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-sm">旅行日记模板</span>
+                                        <span class="text-sm text-gray-500">985 次使用</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-gray-400 text-white flex items-center justify-center mr-3">3</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-gray-400 rounded-full" style="width: 65%"></div>
+                                        <span class="ml-2 text-sm">65%</span>
+                                    </div>
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-sm">音乐视觉模板</span>
+                                        <span class="text-sm text-gray-500">623 次使用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded shadow">
+                        <h3 class="text-lg font-medium mb-4">用户地域分布</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <span class="w-20 text-sm">广东省</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-blue-500 rounded-full" style="width: 25%"></div>
+                                        <span class="ml-2 text-sm">25%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="w-20 text-sm">北京市</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-blue-500 rounded-full" style="width: 18%"></div>
+                                        <span class="ml-2 text-sm">18%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="w-20 text-sm">上海市</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-blue-500 rounded-full" style="width: 16%"></div>
+                                        <span class="ml-2 text-sm">16%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="w-20 text-sm">浙江省</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-blue-500 rounded-full" style="width: 12%"></div>
+                                        <span class="ml-2 text-sm">12%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <span class="w-20 text-sm">其他</span>
+                                <div class="flex-1">
+                                    <div class="flex items-center">
+                                        <div class="h-2.5 bg-blue-500 rounded-full" style="width: 29%"></div>
+                                        <span class="ml-2 text-sm">29%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

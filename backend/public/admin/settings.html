@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统设置 - 视频编辑器</title>
+    <link rel="stylesheet" href="/admin/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>视频编辑器</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin/dashboard.html">仪表盘</a></li>
+                <li><a href="/admin/users.html">用户管理</a></li>
+                <li><a href="/admin/videos.html">视频管理</a></li>
+                <li><a href="/admin/templates.html">模板管理</a></li>
+                <li><a href="/admin/categories.html">分类管理</a></li>
+                <li class="active"><a href="/admin/settings.html">系统设置</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>系统设置</h2>
+                <div class="header-right">
+                    <span id="admin-name">管理员：加载中...</span>
+                    <button class="logout-btn" id="logout-btn">退出登录</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">管理员账户</h3>
+                <form id="admin-form">
+                    <div class="form-group">
+                        <label for="admin-username">用户名</label>
+                        <input type="text" id="admin-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-email">邮箱</label>
+                        <input type="email" id="admin-email" name="email" required>
+                    </div>
+                    <div style="margin-bottom: 30px;">
+                        <button type="submit" class="button button-primary">保存管理员账户信息</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">修改密码</h3>
+                <form id="password-form">
+                    <div class="form-group">
+                        <label for="current-password">当前密码</label>
+                        <input type="password" id="current-password" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">新密码</label>
+                        <input type="password" id="new-password" name="newPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">确认新密码</label>
+                        <input type="password" id="confirm-password" name="confirmPassword" required minlength="6">
+                    </div>
+                    <div style="margin-bottom: 30px;">
+                        <button type="submit" class="button button-primary">修改密码</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">系统维护</h3>
+                <div class="form-group">
+                    <button id="clear-cache-btn" class="button">清除缓存</button>
+                    <button id="backup-db-btn" class="button" style="margin-left: 10px;">备份数据库</button>
+                </div>
+                <div class="form-group">
+                    <label for="max-file-size">最大上传文件大小 (MB)</label>
+                    <input type="number" id="max-file-size" name="maxFileSize" min="10" max="1000" value="100">
+                </div>
+                <div class="form-group">
+                    <button id="save-settings-btn" class="button button-primary">保存系统设置</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 验证登录状态
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                const data = await response.json();
+                if (!data.data.is_admin) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                // 显示管理员名称
+                document.getElementById('admin-name').textContent = `管理员：${data.data.username}`;
+                
+                // 填充管理员表单
+                document.getElementById('admin-username').value = data.data.username;
+                document.getElementById('admin-email').value = data.data.email;
+                
+                // 加载系统设置
+                loadSystemSettings();
+            } catch (error) {
+                console.error('认证检查失败:', error);
+                window.location.href = '/admin/index.html';
+            }
+        }
+        
+        // 加载系统设置
+        async function loadSystemSettings() {
+            try {
+                const response = await fetch('/api/settings', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const settings = data.data;
+                    
+                    // 填充设置表单
+                    document.getElementById('max-file-size').value = settings.maxFileSize || 100;
+                }
+            } catch (error) {
+                console.error('加载系统设置失败:', error);
+                // 使用默认值，不显示错误
+            }
+        }
+        
+        // 更新管理员账户信息
+        async function updateAdminProfile(formData) {
+            try {
+                const response = await fetch('/api/users/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: formData.get('username'),
+                        email: formData.get('email')
+                    }),
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || '更新个人资料失败');
+                }
+                
+                alert('管理员账户信息已更新');
+                // 更新页面显示的管理员名称
+                document.getElementById('admin-name').textContent = `管理员：${formData.get('username')}`;
+            } catch (error) {
+                console.error('更新个人资料失败:', error);
+                alert('更新个人资料失败: ' + error.message);
+            }
+        }
+        
+        // 修改密码
+        async function changePassword(formData) {
+            try {
+                // 检查新密码和确认密码是否一致
+                if (formData.get('newPassword') !== formData.get('confirmPassword')) {
+                    throw new Error('新密码与确认密码不一致');
+                }
+                
+                const response = await fetch('/api/auth/change-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        currentPassword: formData.get('currentPassword'),
+                        newPassword: formData.get('newPassword')
+                    }),
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || '修改密码失败');
+                }
+                
+                alert('密码已成功修改');
+                document.getElementById('password-form').reset();
+            } catch (error) {
+                console.error('修改密码失败:', error);
+                alert('修改密码失败: ' + error.message);
+            }
+        }
+        
+        // 清除缓存
+        async function clearCache() {
+            try {
+                const response = await fetch('/api/system/clear-cache', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('清除缓存失败');
+                }
+                
+                alert('缓存已清除');
+            } catch (error) {
+                console.error('清除缓存失败:', error);
+                alert('清除缓存失败: ' + error.message);
+            }
+        }
+        
+        // 备份数据库
+        async function backupDatabase() {
+            try {
+                const response = await fetch('/api/system/backup-db', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('数据库备份失败');
+                }
+                
+                const data = await response.json();
+                alert(`数据库备份成功。备份文件: ${data.data.filename}`);
+            } catch (error) {
+                console.error('数据库备份失败:', error);
+                alert('数据库备份失败: ' + error.message);
+            }
+        }
+        
+        // 保存系统设置
+        async function saveSystemSettings() {
+            try {
+                const maxFileSize = document.getElementById('max-file-size').value;
+                
+                const response = await fetch('/api/settings', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        maxFileSize: parseInt(maxFileSize)
+                    }),
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('保存系统设置失败');
+                }
+                
+                alert('系统设置已保存');
+            } catch (error) {
+                console.error('保存系统设置失败:', error);
+                alert('保存系统设置失败: ' + error.message);
+            }
+        }
+        
+        // 退出登录
+        document.getElementById('logout-btn').addEventListener('click', async function() {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/admin/index.html';
+            } catch (error) {
+                console.error('退出失败:', error);
+            }
+        });
+        
+        // 绑定表单提交事件 - 管理员账户信息
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            updateAdminProfile(formData);
+        });
+        
+        // 绑定表单提交事件 - 修改密码
+        document.getElementById('password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            changePassword(formData);
+        });
+        
+        // 绑定清除缓存按钮
+        document.getElementById('clear-cache-btn').addEventListener('click', clearCache);
+        
+        // 绑定备份数据库按钮
+        document.getElementById('backup-db-btn').addEventListener('click', backupDatabase);
+        
+        // 绑定保存系统设置按钮
+        document.getElementById('save-settings-btn').addEventListener('click', saveSystemSettings);
+        
+        // 页面加载完成后检查认证并加载数据
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html> 

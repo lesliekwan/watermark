@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>贴图编辑 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="flex items-center justify-between px-4 py-3 bg-black/20">
+        <button class="text-white">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </button>
+        <h1 class="text-lg font-medium">添加贴图</h1>
+        <button class="text-blue-400">
+            保存
+        </button>
+    </div>
+
+    <!-- 预览区 -->
+    <div class="aspect-video bg-black relative">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <img src="https://via.placeholder.com/200" alt="贴图预览" class="w-40">
+        </div>
+    </div>
+
+    <!-- 编辑面板 -->
+    <div class="p-4 panel">
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">选择图片</label>
+            <button class="w-full bg-blue-500 text-white py-2 rounded flex items-center justify-center">
+                <i class="fas fa-upload mr-2"></i> 上传图片
+            </button>
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">选择表情</label>
+            <div class="grid grid-cols-5 gap-2">
+                <img src="https://via.placeholder.com/50" class="rounded bg-white/10 p-1">
+                <img src="https://via.placeholder.com/50" class="rounded bg-white/10 p-1">
+                <img src="https://via.placeholder.com/50" class="rounded bg-white/10 p-1">
+                <img src="https://via.placeholder.com/50" class="rounded bg-white/10 p-1">
+                <img src="https://via.placeholder.com/50" class="rounded bg-white/10 p-1">
+            </div>
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">图片大小</label>
+            <input type="range" class="w-full" min="10" max="100" value="50">
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">透明度</label>
+            <input type="range" class="w-full" min="0" max="100" value="100">
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">旋转</label>
+            <input type="range" class="w-full" min="0" max="360" value="0">
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">添加动画</label>
+            <div class="flex overflow-x-auto whitespace-nowrap py-2">
+                <button class="flex-shrink-0 bg-white/10 p-2 mr-2 rounded">渐入</button>
+                <button class="flex-shrink-0 bg-white/10 p-2 mr-2 rounded">渐出</button>
+                <button class="flex-shrink-0 bg-white/10 p-2 mr-2 rounded">弹跳</button>
+                <button class="flex-shrink-0 bg-white/10 p-2 mr-2 rounded">旋转</button>
+                <button class="flex-shrink-0 bg-white/10 p-2 mr-2 rounded">心跳</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

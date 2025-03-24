@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>转场效果 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="flex items-center justify-between px-4 py-3 bg-black/20">
+        <button class="text-white">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </button>
+        <h1 class="text-lg font-medium">添加转场效果</h1>
+        <button class="text-blue-400">
+            保存
+        </button>
+    </div>
+
+    <!-- 预览区 -->
+    <div class="aspect-video bg-black relative flex items-center justify-center">
+        <div class="relative w-2/3 h-10 flex items-center">
+            <div class="w-24 h-full bg-blue-500 absolute left-0 rounded-l"></div>
+            <div class="w-12 h-full bg-gradient-to-r from-blue-500 to-purple-500 absolute left-24"></div>
+            <div class="w-24 h-full bg-purple-500 absolute left-36 rounded-r"></div>
+            <div class="absolute w-full text-center">转场预览</div>
+        </div>
+    </div>
+
+    <!-- 转场效果列表 -->
+    <div class="p-4 panel">
+        <div class="mb-4">
+            <label class="block text-white text-sm mb-2">转场效果</label>
+        </div>
+        
+        <div class="space-y-3">
+            <div class="flex items-center bg-white/10 p-3 rounded-lg active:bg-blue-500/30">
+                <div class="w-16 h-16 bg-black/20 rounded flex items-center justify-center mr-3">
+                    <i class="fas fa-random text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-medium">淡入淡出</h3>
+                    <p class="text-sm text-white/60">经典的渐变过渡效果</p>
+                </div>
+                <i class="fas fa-check-circle text-blue-400 text-xl"></i>
+            </div>
+            
+            <div class="flex items-center bg-white/10 p-3 rounded-lg">
+                <div class="w-16 h-16 bg-black/20 rounded flex items-center justify-center mr-3">
+                    <i class="fas fa-arrows-alt-h text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-medium">水平滑动</h3>
+                    <p class="text-sm text-white/60">从右到左的滑动效果</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center bg-white/10 p-3 rounded-lg">
+                <div class="w-16 h-16 bg-black/20 rounded flex items-center justify-center mr-3">
+                    <i class="fas fa-expand-arrows-alt text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-medium">缩放</h3>
+                    <p class="text-sm text-white/60">放大淡出的过渡效果</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center bg-white/10 p-3 rounded-lg">
+                <div class="w-16 h-16 bg-black/20 rounded flex items-center justify-center mr-3">
+                    <i class="fas fa-spinner text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-medium">旋转</h3>
+                    <p class="text-sm text-white/60">3D旋转切换效果</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center bg-white/10 p-3 rounded-lg">
+                <div class="w-16 h-16 bg-black/20 rounded flex items-center justify-center mr-3">
+                    <i class="fas fa-cubes text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-medium">方块</h3>
+                    <p class="text-sm text-white/60">方块拼图过渡效果</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <label class="block text-white text-sm mb-2">过渡时长</label>
+            <div class="flex items-center space-x-2">
+                <input type="range" class="flex-1" min="0.5" max="3" step="0.1" value="1">
+                <span class="w-10 text-center">1s</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

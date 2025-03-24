@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>相册选择 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="flex items-center justify-between px-4 py-3 bg-black/20">
+        <a href="index.html" class="text-white">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
+        <h1 class="text-lg font-medium">选择视频</h1>
+        <a href="editor.html" class="text-blue-400">
+            下一步
+        </a>
+    </div>
+
+    <!-- 相册类别 -->
+    <div class="px-4 py-2 flex space-x-4 overflow-x-auto whitespace-nowrap">
+        <button class="px-4 py-1 bg-blue-500 text-white rounded-full">最近</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full">相机胶卷</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full">视频</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full">下载</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full">收藏</button>
+    </div>
+
+    <!-- 视频列表 -->
+    <div class="p-4 grid grid-cols-3 gap-2">
+        <!-- 视频1 -->
+        <div class="relative rounded-lg overflow-hidden">
+            <img src="https://pic.51yuansu.com/pic3/cover/01/07/17/593c7e3941270_610.jpg" 
+                 alt="视频1" class="aspect-square object-cover w-full">
+            <div class="absolute bottom-1 right-1 bg-black/50 rounded px-1 text-xs">
+                0:15
+            </div>
+        </div>
+        
+        <!-- 视频2 -->
+        <div class="relative rounded-lg overflow-hidden bg-blue-500/30">
+            <img src="https://pic.51yuansu.com/pic3/cover/01/94/82/5c19e3fc6c53e_610.jpg" 
+                 alt="视频2" class="aspect-square object-cover w-full">
+            <div class="absolute bottom-1 right-1 bg-black/50 rounded px-1 text-xs">
+                1:22
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center bg-black/20">
+                <div class="h-6 w-6 rounded-full border-2 border-white"></div>
+            </div>
+        </div>
+        
+        <!-- 视频3 -->
+        <div class="relative rounded-lg overflow-hidden">
+            <img src="https://pic.51yuansu.com/pic3/cover/03/56/27/5bbcc90e03a91_610.jpg" 
+                 alt="视频3" class="aspect-square object-cover w-full">
+            <div class="absolute bottom-1 right-1 bg-black/50 rounded px-1 text-xs">
+                0:45
+            </div>
+        </div>
+        
+        <!-- 视频4 -->
+        <div class="relative rounded-lg overflow-hidden">
+            <img src="https://pic.51yuansu.com/pic3/cover/03/96/35/5de84a63a76dd_610.jpg" 
+                 alt="视频4" class="aspect-square object-cover w-full">
+            <div class="absolute bottom-1 right-1 bg-black/50 rounded px-1 text-xs">
+                2:35
+            </div>
+        </div>
+        
+        <!-- 视频5 -->
+        <div class="relative rounded-lg overflow-hidden">
+            <img src="https://pic.51yuansu.com/pic3/cover/03/94/61/5ddc7c60f38dc_610.jpg" 
+                 alt="视频5" class="aspect-square object-cover w-full">
+            <div class="absolute bottom-1 right-1 bg-black/50 rounded px-1 text-xs">
+                3:12
+            </div>
+        </div>
+        
+        <!-- 视频6 -->
+        <div class="relative rounded-lg overflow-hidden">
+            <img src="https://pic.51yuansu.com/pic3/cover/03/99/37/5df0c3f53e5a5_610.jpg" 
+                 alt="视频6" class="aspect-square object-cover w-full">
+            <div class="absolute bottom-1 right-1 bg-black/50 rounded px-1 text-xs">
+                1:05
+            </div>
+        </div>
+    </div>
+    
+    <!-- 选择提示 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur p-4 flex items-center justify-between">
+        <div>
+            <h3 class="font-medium">已选择 1 个视频</h3>
+            <p class="text-sm text-white/60">总时长 1分22秒</p>
+        </div>
+        <a href="editor.html" class="px-6 py-2 bg-blue-500 rounded-full font-medium">
+            开始编辑
+        </a>
+    </div>
+</body>
+</html> 

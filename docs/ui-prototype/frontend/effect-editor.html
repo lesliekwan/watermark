@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>特效编辑 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: #1a1c2e;
+            color: white;
+            min-height: 100vh;
+        }
+        .effect-item.active {
+            border: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部工具栏 -->
+    <div class="bg-gray-900 py-3 px-4 flex items-center justify-between">
+        <a href="create.html" class="text-white">
+            <i class="fas fa-times"></i>
+        </a>
+        <h1 class="text-white font-medium">视频特效</h1>
+        <button class="text-blue-500 font-medium">完成</button>
+    </div>
+
+    <!-- 视频预览区域 -->
+    <div class="relative bg-black w-full aspect-video">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="视频预览" class="w-full h-full object-cover">
+            <!-- 模拟闪光特效 -->
+            <div class="absolute inset-0 bg-white/30 animate-pulse"></div>
+        </div>
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+            00:05 / 00:30
+        </div>
+    </div>
+
+    <!-- 特效选择区 -->
+    <div class="p-4">
+        <!-- 特效分类 -->
+        <div class="flex overflow-x-auto py-2 space-x-3 no-scrollbar">
+            <button class="flex-shrink-0 bg-blue-600 text-white px-4 py-2 rounded-full text-sm">热门</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">转场</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">视觉</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">粒子</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">光效</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">变形</button>
+        </div>
+        
+        <!-- 特效列表 -->
+        <div class="grid grid-cols-4 gap-3 mt-6">
+            <div class="effect-item active rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-blue-500 to-purple-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">闪光</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-red-500 to-orange-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">火焰</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-green-500 to-teal-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">荧光</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-purple-500 to-pink-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">故障</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-yellow-500 to-amber-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">星光</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-indigo-500 to-blue-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">雨滴</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-cyan-500 to-blue-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">水波</span>
+                </div>
+            </div>
+            
+            <div class="effect-item rounded-lg overflow-hidden">
+                <div class="bg-gradient-to-br from-rose-500 to-red-500 aspect-square flex items-center justify-center">
+                    <span class="text-white text-xs">心形</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 特效参数控制 -->
+        <div class="mt-8 space-y-4">
+            <h3 class="text-white text-sm mb-2">特效参数</h3>
+            
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-gray-400 text-sm">强度</span>
+                    <span class="text-white text-xs">70%</span>
+                </div>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="70" 
+                    class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                >
+            </div>
+            
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-gray-400 text-sm">速度</span>
+                    <span class="text-white text-xs">50%</span>
+                </div>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="50" 
+                    class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                >
+            </div>
+            
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-gray-400 text-sm">数量</span>
+                    <span class="text-white text-xs">30%</span>
+                </div>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="30" 
+                    class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                >
+            </div>
+        </div>
+        
+        <!-- 持续时间选择 -->
+        <div class="mt-8">
+            <h3 class="text-white text-sm mb-2">应用时长</h3>
+            <div class="flex space-x-3">
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">整个视频</button>
+                <button class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm">仅当前片段</button>
+                <button class="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm">自定义</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部播放控制 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 px-4 py-4">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-white text-xs">00:00</span>
+            <div class="flex-1 mx-2 h-1 bg-gray-700 rounded-full relative">
+                <div class="absolute left-0 top-0 bottom-0 w-1/4 bg-blue-500 rounded-full"></div>
+                <div class="absolute h-4 w-4 bg-white rounded-full -top-1.5 left-1/4 -ml-2"></div>
+            </div>
+            <span class="text-white text-xs">00:30</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <button class="text-white"><i class="fas fa-step-backward"></i></button>
+            <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                <i class="fas fa-play text-gray-900"></i>
+            </button>
+            <button class="text-white"><i class="fas fa-step-forward"></i></button>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>模板列表 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1a1c2e, #2d3748);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="pb-16">
+    <!-- 顶部导航栏 -->
+    <div class="bg-gray-900/80 backdrop-blur-md fixed top-0 left-0 right-0 z-10">
+        <div class="flex items-center justify-between p-4">
+            <a href="index.html" class="text-white">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-white text-lg font-bold">模板库</h1>
+            <div class="w-5"></div> <!-- 为了平衡布局 -->
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="pt-16 px-4">
+        <!-- 分类按钮 -->
+        <div class="flex overflow-x-auto py-4 space-x-3 no-scrollbar">
+            <button class="flex-shrink-0 bg-blue-500 text-white px-4 py-2 rounded-full text-sm">全部</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">商务</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">旅行</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">娱乐</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">教育</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">社交</button>
+        </div>
+
+        <!-- 模板列表 -->
+        <div class="grid grid-cols-2 gap-4 mt-4">
+            <a href="template-detail.html?id=1" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <img src="https://pic.51yuansu.com/pic3/cover/00/70/94/5929b4e02d84c_610.jpg" alt="商务模板" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="text-white font-medium truncate">商务展示模板</h3>
+                    <div class="flex items-center mt-2 text-xs">
+                        <span class="text-red-400 mr-2"><i class="fas fa-heart"></i> 1.2k</span>
+                        <span class="text-gray-400"><i class="fas fa-play-circle"></i> 8.5k</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="template-detail.html?id=2" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="旅行模板" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="text-white font-medium truncate">旅行日记模板</h3>
+                    <div class="flex items-center mt-2 text-xs">
+                        <span class="text-red-400 mr-2"><i class="fas fa-heart"></i> 985</span>
+                        <span class="text-gray-400"><i class="fas fa-play-circle"></i> 5.4k</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="template-detail.html?id=3" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <img src="https://pic.51yuansu.com/pic3/cover/03/51/14/5bb732c18b92f_610.jpg" alt="音乐模板" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="text-white font-medium truncate">音乐视觉模板</h3>
+                    <div class="flex items-center mt-2 text-xs">
+                        <span class="text-red-400 mr-2"><i class="fas fa-heart"></i> 623</span>
+                        <span class="text-gray-400"><i class="fas fa-play-circle"></i> 2.1k</span>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="template-detail.html?id=4" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <img src="https://pic.51yuansu.com/pic3/cover/03/47/46/5bb483ddb2169_610.jpg" alt="教育模板" class="w-full h-32 object-cover">
+                <div class="p-3">
+                    <h3 class="text-white font-medium truncate">教育课程模板</h3>
+                    <div class="flex items-center mt-2 text-xs">
+                        <span class="text-red-400 mr-2"><i class="fas fa-heart"></i> 512</span>
+                        <span class="text-gray-400"><i class="fas fa-play-circle"></i> 3.8k</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- 更多模板卡片... -->
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 py-2 px-4 flex justify-between items-center border-t border-gray-800">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="discover.html" class="flex flex-col items-center text-blue-500">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1">发现</span>
+        </a>
+        <a href="create.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-plus-circle text-xl"></i>
+            <span class="text-xs mt-1">创作</span>
+        </a>
+        <a href="my-profile.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">我的</span>
+        </a>
+    </div>
+</body>
+</html> 

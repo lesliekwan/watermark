@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>发现 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 复用相同的样式 */
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding-bottom: env(safe-area-inset-bottom);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .content-area {
+            padding-bottom: calc(64px + env(safe-area-inset-bottom));
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部搜索栏 -->
+    <div class="px-4 py-3 space-y-3 bg-transparent">
+        <span class="text-xl font-medium gradient-text">发现</span>
+        <div class="flex items-center bg-white/10 rounded-full px-4 py-2 backdrop-blur">
+            <i class="fas fa-search text-white/60"></i>
+            <input type="search" placeholder="搜索模板" class="ml-2 bg-transparent w-full outline-none text-white placeholder-white/60">
+        </div>
+    </div>
+
+    <!-- 分类标签 -->
+    <div class="overflow-x-auto whitespace-nowrap px-4 py-3">
+        <button class="px-4 py-1 bg-blue-500 text-white rounded-full mr-2">全部</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full mr-2">商务</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full mr-2">旅行</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full mr-2">美食</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full mr-2">时尚</button>
+    </div>
+
+    <!-- 模板列表 -->
+    <div class="content-area p-4 grid grid-cols-2 gap-4">
+        <!-- 模板卡片 1 -->
+        <div class="rounded-2xl overflow-hidden bg-white/10 backdrop-blur">
+            <div class="aspect-[3/4] relative">
+                <img src="https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg" 
+                     alt="商务模板" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <button class="absolute bottom-3 right-3 px-3 py-1 bg-blue-500 rounded-full text-white text-sm">
+                    使用
+                </button>
+            </div>
+            <div class="p-2">
+                <h3 class="font-medium text-white text-sm">商务会议</h3>
+                <div class="flex items-center mt-1 space-x-3">
+                    <span class="text-xs text-white/60">
+                        <i class="fas fa-heart text-red-500"></i> 2.3k
+                    </span>
+                    <span class="text-xs text-white/60">
+                        <i class="fas fa-fire text-orange-500"></i> 热门
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模板卡片 2 -->
+        <div class="rounded-2xl overflow-hidden bg-white/10 backdrop-blur">
+            <div class="aspect-[3/4] relative">
+                <img src="https://images.pexels.com/photos/2253643/pexels-photo-2253643.jpeg" 
+                     alt="旅行模板" 
+                     class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <button class="absolute bottom-3 right-3 px-3 py-1 bg-blue-500 rounded-full text-white text-sm">
+                    使用
+                </button>
+            </div>
+            <div class="p-2">
+                <h3 class="font-medium text-white text-sm">旅行日记</h3>
+                <div class="flex items-center mt-1 space-x-3">
+                    <span class="text-xs text-white/60">
+                        <i class="fas fa-heart text-red-500"></i> 1.8k
+                    </span>
+                    <span class="text-xs text-white/60">
+                        <i class="fas fa-star text-yellow-500"></i> 推荐
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 更多模板卡片... -->
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="bottom-nav">
+        <div class="grid grid-cols-4 gap-1 py-2">
+            <a href="index.html" class="flex flex-col items-center text-white/40">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-xs mt-1">首页</span>
+            </a>
+            <a href="template.html" class="flex flex-col items-center">
+                <i class="fas fa-compass text-xl text-white"></i>
+                <span class="text-xs mt-1 text-white">发现</span>
+            </a>
+            <a href="create.html" class="flex flex-col items-center text-white/40">
+                <i class="fas fa-plus-circle text-xl"></i>
+                <span class="text-xs mt-1">创作</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center text-white/40">
+                <i class="fas fa-user text-xl"></i>
+                <span class="text-xs mt-1">我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

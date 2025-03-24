@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>模板详情 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="flex items-center justify-between px-4 py-3 bg-black/20">
+        <button class="text-white">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </button>
+        <h1 class="text-lg font-medium">模板详情</h1>
+        <button class="text-white">
+            <i class="fas fa-share-alt text-xl"></i>
+        </button>
+    </div>
+
+    <!-- 模板预览 -->
+    <div class="aspect-video bg-black relative">
+        <img src="https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg" 
+             alt="模板预览" class="w-full h-full object-cover">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <button class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+                <i class="fas fa-play text-white text-2xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 模板信息 -->
+    <div class="p-4">
+        <div class="flex justify-between items-start">
+            <div>
+                <h2 class="text-xl font-bold">商务演示模板</h2>
+                <p class="text-white/60 mt-1">适用于企业宣传视频</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                        <i class="fas fa-heart text-red-500"></i>
+                    </div>
+                    <span class="text-xs mt-1">2.3k</span>
+                </button>
+                <button class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                        <i class="fas fa-star text-yellow-500"></i>
+                    </div>
+                    <span class="text-xs mt-1">收藏</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <h3 class="text-lg font-medium mb-2">模板内容</h3>
+            <div class="bg-white/10 rounded-lg p-3 space-y-2">
+                <div class="flex items-center">
+                    <i class="fas fa-font text-blue-400 w-8"></i>
+                    <span>4个文字动画</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-image text-green-400 w-8"></i>
+                    <span>2个图片位置</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-music text-purple-400 w-8"></i>
+                    <span>背景音乐</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-magic text-orange-400 w-8"></i>
+                    <span>3种转场效果</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-6">
+            <h3 class="text-lg font-medium mb-2">适用场景</h3>
+            <div class="flex space-x-2">
+                <span class="px-3 py-1 bg-white/10 rounded-full text-sm">企业宣传</span>
+                <span class="px-3 py-1 bg-white/10 rounded-full text-sm">产品介绍</span>
+                <span class="px-3 py-1 bg-white/10 rounded-full text-sm">商务展示</span>
+            </div>
+        </div>
+        
+        <button class="w-full bg-blue-500 text-white py-3 rounded-lg mt-8 font-medium">
+            使用此模板
+        </button>
+    </div>
+</body>
+</html> 

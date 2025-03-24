@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>意见反馈 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .content-area {
+            padding-bottom: calc(64px + env(safe-area-inset-bottom));
+        }
+    </style>
+</head>
+<body class="pb-16">
+    <!-- 顶部导航栏 -->
+    <div class="bg-gray-900/80 backdrop-blur-md fixed top-0 left-0 right-0 z-10">
+        <div class="flex items-center justify-between p-4">
+            <a href="my-profile.html" class="text-white">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-white text-lg font-bold">意见反馈</h1>
+            <div class="w-5"></div> <!-- 为了平衡布局 -->
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="pt-16 px-4">
+        <!-- 问题类型选择 -->
+        <div class="mb-6">
+            <h2 class="text-white text-lg mb-3">问题类型</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <button class="bg-blue-600 text-white py-2 rounded-lg">功能建议</button>
+                <button class="bg-gray-800 text-white py-2 rounded-lg">Bug反馈</button>
+                <button class="bg-gray-800 text-white py-2 rounded-lg">使用问题</button>
+                <button class="bg-gray-800 text-white py-2 rounded-lg">其他</button>
+            </div>
+        </div>
+
+        <!-- 反馈内容输入 -->
+        <div class="mb-6">
+            <h2 class="text-white text-lg mb-3">反馈内容</h2>
+            <textarea 
+                class="w-full bg-gray-800 text-white rounded-lg p-3 min-h-[150px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="请详细描述您遇到的问题或建议，有助于我们更好地解决问题..."></textarea>
+            <p class="text-right text-gray-400 text-sm mt-1">0/500</p>
+        </div>
+
+        <!-- 添加截图 -->
+        <div class="mb-6">
+            <h2 class="text-white text-lg mb-3">添加截图 (选填)</h2>
+            <div class="flex space-x-3">
+                <button class="w-20 h-20 bg-gray-800 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-plus text-gray-500"></i>
+                </button>
+                <div class="w-20 h-20 bg-gray-800 rounded-lg relative">
+                    <img src="../../assets/images/feedback-example.jpg" class="w-full h-full object-cover rounded-lg" alt="截图示例">
+                    <button class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="text-gray-400 text-sm mt-2">最多添加3张图片</p>
+        </div>
+
+        <!-- 联系方式 -->
+        <div class="mb-8">
+            <h2 class="text-white text-lg mb-3">联系方式 (选填)</h2>
+            <input 
+                type="text" 
+                class="w-full bg-gray-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="手机号/微信/QQ">
+            <p class="text-gray-400 text-sm mt-2">留下联系方式，便于我们回复您的问题</p>
+        </div>
+
+        <!-- 提交按钮 -->
+        <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700">提交反馈</button>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 py-2 px-4 flex justify-between items-center border-t border-gray-800">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="discover.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1">发现</span>
+        </a>
+        <a href="create.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-plus-circle text-xl"></i>
+            <span class="text-xs mt-1">创作</span>
+        </a>
+        <a href="my-profile.html" class="flex flex-col items-center text-blue-500">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">我的</span>
+        </a>
+    </div>
+</body>
+</html> 

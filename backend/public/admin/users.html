@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - 视频编辑器</title>
+    <link rel="stylesheet" href="/admin/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>视频编辑器</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin/dashboard.html">仪表盘</a></li>
+                <li class="active"><a href="/admin/users.html">用户管理</a></li>
+                <li><a href="/admin/videos.html">视频管理</a></li>
+                <li><a href="/admin/templates.html">模板管理</a></li>
+                <li><a href="/admin/categories.html">分类管理</a></li>
+                <li><a href="/admin/settings.html">系统设置</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>用户管理</h2>
+                <div class="header-right">
+                    <span id="admin-name">管理员：加载中...</span>
+                    <button class="logout-btn" id="logout-btn">退出登录</button>
+                </div>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="card-title" style="margin-bottom: 0; border-bottom: none;">用户列表</h3>
+                    <input type="text" placeholder="搜索用户..." id="search-user" style="padding: 8px; width: 200px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>注册时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">加载中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagination" id="pagination">
+                    <!-- 分页控件将由JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 验证登录状态
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                const data = await response.json();
+                if (!data.data.is_admin) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                // 显示管理员名称
+                document.getElementById('admin-name').textContent = `管理员：${data.data.username}`;
+                
+                // 加载用户列表
+                loadUsers();
+            } catch (error) {
+                console.error('认证检查失败:', error);
+                window.location.href = '/admin/index.html';
+            }
+        }
+        
+        // 加载用户列表
+        async function loadUsers(page = 1) {
+            try {
+                const response = await fetch(`/api/users?page=${page}&limit=10`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取用户列表失败');
+                }
+                
+                const data = await response.json();
+                
+                const tableBody = document.getElementById('users-table-body');
+                tableBody.innerHTML = '';
+                
+                if (data.data.users.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">暂无用户数据</td></tr>';
+                    return;
+                }
+                
+                // 渲染用户列表
+                data.data.users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${new Date(user.created_at).toLocaleString()}</td>
+                        <td>
+                            <span style="color: ${user.is_active ? 'green' : 'red'}">
+                                ${user.is_active ? '启用' : '禁用'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="button" onclick="toggleUserStatus(${user.id}, ${!user.is_active})">
+                                ${user.is_active ? '禁用' : '启用'}
+                            </button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+                
+                // 渲染分页
+                renderPagination(data.data.pagination);
+            } catch (error) {
+                console.error('加载用户列表失败:', error);
+                document.getElementById('users-table-body').innerHTML = 
+                    '<tr><td colspan="6" style="text-align: center; color: red;">获取用户列表失败</td></tr>';
+            }
+        }
+        
+        // 渲染分页控件
+        function renderPagination(pagination) {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = '';
+            
+            // 上一页按钮
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '上一页';
+            prevButton.disabled = pagination.page <= 1;
+            if (!prevButton.disabled) {
+                prevButton.onclick = () => loadUsers(pagination.page - 1);
+            }
+            paginationElement.appendChild(prevButton);
+            
+            // 页码按钮
+            for (let i = 1; i <= pagination.totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === pagination.page ? 'active' : '';
+                pageButton.onclick = () => loadUsers(i);
+                paginationElement.appendChild(pageButton);
+            }
+            
+            // 下一页按钮
+            const nextButton = document.createElement('button');
+            nextButton.textContent = '下一页';
+            nextButton.disabled = pagination.page >= pagination.totalPages;
+            if (!nextButton.disabled) {
+                nextButton.onclick = () => loadUsers(pagination.page + 1);
+            }
+            paginationElement.appendChild(nextButton);
+        }
+        
+        // 切换用户状态
+        async function toggleUserStatus(userId, isActive) {
+            try {
+                const response = await fetch(`/api/users/${userId}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ isActive }),
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('操作失败');
+                }
+                
+                // 重新加载用户列表
+                loadUsers();
+                
+                alert(isActive ? '用户已启用' : '用户已禁用');
+            } catch (error) {
+                console.error('更新用户状态失败:', error);
+                alert('操作失败: ' + error.message);
+            }
+        }
+        
+        // 退出登录
+        document.getElementById('logout-btn').addEventListener('click', async function() {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/admin/index.html';
+            } catch (error) {
+                console.error('退出失败:', error);
+            }
+        });
+        
+        // 搜索用户功能
+        document.getElementById('search-user').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#users-table-body tr');
+            
+            rows.forEach(row => {
+                const username = row.cells[1]?.textContent.toLowerCase() || '';
+                const email = row.cells[2]?.textContent.toLowerCase() || '';
+                
+                if (username.includes(searchText) || email.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // 页面加载完成后检查认证并加载数据
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html> 

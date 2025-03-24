@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>滤镜编辑 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: #1a1c2e;
+            color: white;
+            min-height: 100vh;
+        }
+        .filter-item.active {
+            border: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部工具栏 -->
+    <div class="bg-gray-900 py-3 px-4 flex items-center justify-between">
+        <a href="create.html" class="text-white">
+            <i class="fas fa-times"></i>
+        </a>
+        <h1 class="text-white font-medium">滤镜效果</h1>
+        <button class="text-blue-500 font-medium">完成</button>
+    </div>
+
+    <!-- 视频预览区域 -->
+    <div class="relative bg-black w-full aspect-video">
+        <div class="absolute inset-0 flex items-center justify-center">
+            <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="视频预览" class="w-full h-full object-cover">
+            <div class="absolute inset-0 backdrop-brightness-125 backdrop-contrast-110 backdrop-saturate-150"></div>
+        </div>
+        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white px-2 py-1 rounded text-xs">
+            00:05 / 00:30
+        </div>
+    </div>
+
+    <!-- 滤镜选择区 -->
+    <div class="p-4">
+        <!-- 滤镜分类 -->
+        <div class="flex overflow-x-auto py-2 space-x-3 no-scrollbar">
+            <button class="flex-shrink-0 bg-blue-600 text-white px-4 py-2 rounded-full text-sm">热门</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">明亮</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">复古</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">胶片</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">黑白</button>
+            <button class="flex-shrink-0 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm">肖像</button>
+        </div>
+        
+        <!-- 滤镜列表 -->
+        <div class="grid grid-cols-4 gap-3 mt-6">
+            <div class="filter-item active overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="原始" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">清新</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="黑白" class="w-full h-full object-cover grayscale">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">黑白</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="暖色" class="w-full h-full object-cover sepia">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">暖色</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="高对比度" class="w-full h-full object-cover contrast-150">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">高对比</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="鲜艳" class="w-full h-full object-cover saturate-150">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">鲜艳</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="复古" class="w-full h-full object-cover sepia brightness-75">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">复古</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="冷色" class="w-full h-full object-cover hue-rotate-180">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">冷色</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-item overflow-hidden rounded-lg">
+                <div class="relative aspect-square">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="模糊" class="w-full h-full object-cover blur-sm">
+                    <div class="absolute bottom-0 left-0 right-0 bg-black/50 py-1 text-center">
+                        <span class="text-white text-xs">梦幻</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 调整滑块 -->
+        <div class="mt-8">
+            <h3 class="text-white text-sm mb-4">细节调整</h3>
+            
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-gray-400 text-sm">亮度</span>
+                    <span class="text-white text-xs">75%</span>
+                </div>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="75" 
+                    class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                >
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-gray-400 text-sm">对比度</span>
+                    <span class="text-white text-xs">60%</span>
+                </div>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="60" 
+                    class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                >
+            </div>
+            
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="text-gray-400 text-sm">饱和度</span>
+                    <span class="text-white text-xs">85%</span>
+                </div>
+                <input 
+                    type="range" 
+                    min="0" 
+                    max="100" 
+                    value="85" 
+                    class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                >
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部播放控制 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 px-4 py-4">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-white text-xs">00:00</span>
+            <div class="flex-1 mx-2 h-1 bg-gray-700 rounded-full relative">
+                <div class="absolute left-0 top-0 bottom-0 w-1/4 bg-blue-500 rounded-full"></div>
+                <div class="absolute h-4 w-4 bg-white rounded-full -top-1.5 left-1/4 -ml-2"></div>
+            </div>
+            <span class="text-white text-xs">00:30</span>
+        </div>
+        <div class="flex items-center justify-between">
+            <button class="text-white"><i class="fas fa-step-backward"></i></button>
+            <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                <i class="fas fa-play text-gray-900"></i>
+            </button>
+            <button class="text-white"><i class="fas fa-step-forward"></i></button>
+        </div>
+    </div>
+</body>
+</html> 

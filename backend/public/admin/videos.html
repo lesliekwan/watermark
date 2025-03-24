@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频管理 - 视频编辑器</title>
+    <link rel="stylesheet" href="/admin/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>视频编辑器</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin/dashboard.html">仪表盘</a></li>
+                <li><a href="/admin/users.html">用户管理</a></li>
+                <li class="active"><a href="/admin/videos.html">视频管理</a></li>
+                <li><a href="/admin/templates.html">模板管理</a></li>
+                <li><a href="/admin/categories.html">分类管理</a></li>
+                <li><a href="/admin/settings.html">系统设置</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>视频管理</h2>
+                <div class="header-right">
+                    <span id="admin-name">管理员：加载中...</span>
+                    <button class="logout-btn" id="logout-btn">退出登录</button>
+                </div>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="card-title" style="margin-bottom: 0; border-bottom: none;">视频列表</h3>
+                    <input type="text" placeholder="搜索视频..." id="search-video" style="padding: 8px; width: 200px; border: 1px solid #d9d9d9; border-radius: 4px;">
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>缩略图</th>
+                            <th>标题</th>
+                            <th>上传者</th>
+                            <th>上传时间</th>
+                            <th>时长</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videos-table-body">
+                        <tr>
+                            <td colspan="7" style="text-align: center;">加载中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagination" id="pagination">
+                    <!-- 分页控件将由JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 验证登录状态
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                const data = await response.json();
+                if (!data.data.is_admin) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                // 显示管理员名称
+                document.getElementById('admin-name').textContent = `管理员：${data.data.username}`;
+                
+                // 加载视频列表
+                loadVideos();
+            } catch (error) {
+                console.error('认证检查失败:', error);
+                window.location.href = '/admin/index.html';
+            }
+        }
+        
+        // 加载视频列表
+        async function loadVideos(page = 1) {
+            try {
+                // 管理员可以看到所有用户的视频
+                const response = await fetch(`/api/videos?page=${page}&limit=10`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取视频列表失败');
+                }
+                
+                const data = await response.json();
+                
+                const tableBody = document.getElementById('videos-table-body');
+                tableBody.innerHTML = '';
+                
+                if (data.data.videos && data.data.videos.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">暂无视频数据</td></tr>';
+                    return;
+                }
+                
+                // 渲染视频列表
+                data.data.videos.forEach(video => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${video.id}</td>
+                        <td>
+                            <img src="/uploads/${video.thumbnail_path}" alt="${video.title}" style="width: 80px; height: 45px; object-fit: cover;">
+                        </td>
+                        <td>${video.title}</td>
+                        <td>用户ID: ${video.user_id}</td>
+                        <td>${new Date(video.created_at).toLocaleString()}</td>
+                        <td>${formatDuration(video.duration)}</td>
+                        <td>
+                            <button class="button" onclick="previewVideo(${video.id})">预览</button>
+                            <button class="button button-danger" onclick="deleteVideo(${video.id})">删除</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+                
+                // 渲染分页
+                if (data.data.pagination) {
+                    renderPagination(data.data.pagination);
+                }
+            } catch (error) {
+                console.error('加载视频列表失败:', error);
+                document.getElementById('videos-table-body').innerHTML = 
+                    '<tr><td colspan="7" style="text-align: center; color: red;">获取视频列表失败</td></tr>';
+            }
+        }
+        
+        // 格式化视频时长
+        function formatDuration(seconds) {
+            if (!seconds) return '未知';
+            
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+        
+        // 渲染分页控件
+        function renderPagination(pagination) {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = '';
+            
+            // 上一页按钮
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '上一页';
+            prevButton.disabled = pagination.page <= 1;
+            if (!prevButton.disabled) {
+                prevButton.onclick = () => loadVideos(pagination.page - 1);
+            }
+            paginationElement.appendChild(prevButton);
+            
+            // 页码按钮
+            for (let i = 1; i <= pagination.totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === pagination.page ? 'active' : '';
+                pageButton.onclick = () => loadVideos(i);
+                paginationElement.appendChild(pageButton);
+            }
+            
+            // 下一页按钮
+            const nextButton = document.createElement('button');
+            nextButton.textContent = '下一页';
+            nextButton.disabled = pagination.page >= pagination.totalPages;
+            if (!nextButton.disabled) {
+                nextButton.onclick = () => loadVideos(pagination.page + 1);
+            }
+            paginationElement.appendChild(nextButton);
+        }
+        
+        // 预览视频
+        function previewVideo(videoId) {
+            // 在新窗口打开视频预览
+            window.open(`/preview-video.html?id=${videoId}`, '_blank');
+        }
+        
+        // 删除视频
+        async function deleteVideo(videoId) {
+            if (!confirm('确定要删除这个视频吗？此操作不可恢复！')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/videos/${videoId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('删除视频失败');
+                }
+                
+                alert('视频已删除');
+                
+                // 重新加载视频列表
+                loadVideos();
+            } catch (error) {
+                console.error('删除视频失败:', error);
+                alert('删除视频失败: ' + error.message);
+            }
+        }
+        
+        // 退出登录
+        document.getElementById('logout-btn').addEventListener('click', async function() {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/admin/index.html';
+            } catch (error) {
+                console.error('退出失败:', error);
+            }
+        });
+        
+        // 搜索功能
+        document.getElementById('search-video').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#videos-table-body tr');
+            
+            rows.forEach(row => {
+                const title = row.cells[2]?.textContent.toLowerCase() || '';
+                
+                if (title.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // 页面加载完成后检查认证并加载数据
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html> 

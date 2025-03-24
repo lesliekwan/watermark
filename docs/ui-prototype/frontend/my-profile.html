@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>个人中心 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .content-area {
+            padding-bottom: calc(64px + env(safe-area-inset-bottom));
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <div class="px-4 py-3 flex items-center justify-between bg-transparent">
+        <span class="text-xl font-medium gradient-text">个人中心</span>
+        <button class="p-2 bg-white/10 rounded-full">
+            <i class="fas fa-cog text-white/80"></i>
+        </button>
+    </div>
+
+    <!-- 用户信息区域 -->
+    <div class="px-4 py-6">
+        <div class="flex items-center">
+            <div class="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-r from-purple-500 to-blue-500">
+                <img src="https://pic.51yuansu.com/pic3/cover/01/69/80/595f4699613ea_610.jpg" alt="用户头像" class="w-full h-full object-cover">
+            </div>
+            <div class="ml-4">
+                <h2 class="text-white text-xl font-bold">视频创作者</h2>
+                <p class="text-gray-400 mt-1">ID: 10086</p>
+                <button class="mt-2 bg-blue-600/80 text-white text-xs px-3 py-1 rounded-full">编辑资料</button>
+            </div>
+        </div>
+        
+        <!-- 统计数据 -->
+        <div class="flex justify-between mt-6 bg-gray-800/50 p-4 rounded-xl">
+            <div class="text-center">
+                <p class="text-white text-lg font-bold">18</p>
+                <p class="text-gray-400 text-xs">作品</p>
+            </div>
+            <div class="text-center">
+                <p class="text-white text-lg font-bold">243</p>
+                <p class="text-gray-400 text-xs">粉丝</p>
+            </div>
+            <div class="text-center">
+                <p class="text-white text-lg font-bold">56</p>
+                <p class="text-gray-400 text-xs">关注</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 功能入口 -->
+    <div class="px-4 py-4 space-y-6">
+        <!-- 第一组 -->
+        <div class="bg-gray-800 rounded-xl overflow-hidden">
+            <a href="my-works.html" class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center">
+                    <i class="fas fa-film text-blue-400 w-6"></i>
+                    <span class="text-white ml-3">我的作品</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-600"></i>
+            </a>
+            <a href="my-favorites.html" class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center">
+                    <i class="fas fa-heart text-red-400 w-6"></i>
+                    <span class="text-white ml-3">我的收藏</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-600"></i>
+            </a>
+            <a href="my-drafts.html" class="flex items-center justify-between p-4">
+                <div class="flex items-center">
+                    <i class="fas fa-file-alt text-yellow-400 w-6"></i>
+                    <span class="text-white ml-3">草稿箱</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-600"></i>
+            </a>
+        </div>
+        
+        <!-- 第二组 -->
+        <div class="bg-gray-800 rounded-xl overflow-hidden">
+            <a href="settings.html" class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center">
+                    <i class="fas fa-cog text-gray-400 w-6"></i>
+                    <span class="text-white ml-3">设置</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-600"></i>
+            </a>
+            <a href="help-center.html" class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center">
+                    <i class="fas fa-question-circle text-green-400 w-6"></i>
+                    <span class="text-white ml-3">帮助中心</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-600"></i>
+            </a>
+            <a href="feedback.html" class="flex items-center justify-between p-4">
+                <div class="flex items-center">
+                    <i class="fas fa-comment-alt text-purple-400 w-6"></i>
+                    <span class="text-white ml-3">意见反馈</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-600"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 py-2 px-4 flex justify-between items-center border-t border-gray-800">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="discover.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1">发现</span>
+        </a>
+        <a href="create.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-plus-circle text-xl"></i>
+            <span class="text-xs mt-1">创作</span>
+        </a>
+        <a href="my-profile.html" class="flex flex-col items-center text-blue-500">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">我的</span>
+        </a>
+    </div>
+</body>
+</html> 

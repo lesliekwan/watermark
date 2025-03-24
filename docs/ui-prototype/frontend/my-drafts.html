@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>草稿箱 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1a1c2e, #2d3748);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="pb-16">
+    <!-- 顶部导航栏 -->
+    <div class="bg-gray-900/80 backdrop-blur-md fixed top-0 left-0 right-0 z-10">
+        <div class="flex items-center justify-between p-4">
+            <a href="my-profile.html" class="text-white">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="text-white text-lg font-bold">草稿箱</h1>
+            <div class="w-5"></div> <!-- 为了平衡布局 -->
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="pt-16 px-4">
+        <!-- 草稿列表 -->
+        <div class="space-y-4 mt-4">
+            <a href="editor.html?draft=1" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <div class="flex">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/51/14/5bb732c18b92f_610.jpg" alt="草稿预览" class="w-24 h-24 object-cover">
+                    <div class="p-3 flex-1">
+                        <h3 class="text-white font-medium">未命名草稿1</h3>
+                        <p class="text-gray-400 text-sm mt-1">上次编辑：2024-05-15 14:30</p>
+                        <div class="text-blue-400 text-sm mt-2">继续编辑</div>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="editor.html?draft=2" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <div class="flex">
+                    <img src="https://pic.51yuansu.com/pic3/cover/03/86/35/5dd3cd80a6159_610.jpg" alt="草稿预览" class="w-24 h-24 object-cover">
+                    <div class="p-3 flex-1">
+                        <h3 class="text-white font-medium">旅行视频草稿</h3>
+                        <p class="text-gray-400 text-sm mt-1">上次编辑：2024-05-14 09:15</p>
+                        <div class="text-blue-400 text-sm mt-2">继续编辑</div>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="editor.html?draft=3" class="block bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                <div class="flex">
+                    <img src="https://pic.51yuansu.com/pic3/cover/00/70/94/5929b4e02d84c_610.jpg" alt="草稿预览" class="w-24 h-24 object-cover">
+                    <div class="p-3 flex-1">
+                        <h3 class="text-white font-medium">商务演示草稿</h3>
+                        <p class="text-gray-400 text-sm mt-1">上次编辑：2024-05-12 16:45</p>
+                        <div class="text-blue-400 text-sm mt-2">继续编辑</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <!-- 当没有草稿时显示 -->
+        <div class="hidden mt-12 text-center">
+            <div class="bg-gray-800/50 w-24 h-24 mx-auto rounded-full flex items-center justify-center">
+                <i class="fas fa-file-alt text-gray-600 text-4xl"></i>
+            </div>
+            <p class="text-gray-400 mt-4">暂无草稿</p>
+            <a href="create.html" class="mt-6 inline-block bg-blue-600 text-white px-6 py-2 rounded-full">开始创作</a>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-900 py-2 px-4 flex justify-between items-center border-t border-gray-800">
+        <a href="index.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1">首页</span>
+        </a>
+        <a href="discover.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1">发现</span>
+        </a>
+        <a href="create.html" class="flex flex-col items-center text-gray-400 hover:text-white">
+            <i class="fas fa-plus-circle text-xl"></i>
+            <span class="text-xs mt-1">创作</span>
+        </a>
+        <a href="my-profile.html" class="flex flex-col items-center text-blue-500">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">我的</span>
+        </a>
+    </div>
+</body>
+</html> 

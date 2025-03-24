@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类管理 - 视频编辑器</title>
+    <link rel="stylesheet" href="/admin/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>视频编辑器</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin/dashboard.html">仪表盘</a></li>
+                <li><a href="/admin/users.html">用户管理</a></li>
+                <li><a href="/admin/videos.html">视频管理</a></li>
+                <li><a href="/admin/templates.html">模板管理</a></li>
+                <li class="active"><a href="/admin/categories.html">分类管理</a></li>
+                <li><a href="/admin/settings.html">系统设置</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>分类管理</h2>
+                <div class="header-right">
+                    <span id="admin-name">管理员：加载中...</span>
+                    <button class="logout-btn" id="logout-btn">退出登录</button>
+                </div>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="card-title" style="margin-bottom: 0; border-bottom: none;">分类列表</h3>
+                    <button class="button button-primary" id="create-category-btn">新建分类</button>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>描述</th>
+                            <th>模板数量</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categories-table-body">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">加载中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建/编辑分类对话框 -->
+    <div id="category-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 20px; border-radius: 8px; width: 400px; max-width: 90%;">
+            <h3 id="modal-title">新建分类</h3>
+            <form id="category-form">
+                <div class="form-group">
+                    <label for="category-name">分类名称</label>
+                    <input type="text" id="category-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category-description">描述</label>
+                    <textarea id="category-description" name="description" rows="3"></textarea>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="button" style="margin-right: 10px;" onclick="closeModal()">取消</button>
+                    <button type="submit" class="button button-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let editingCategoryId = null;
+        
+        // 验证登录状态
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                const data = await response.json();
+                if (!data.data.is_admin) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                // 显示管理员名称
+                document.getElementById('admin-name').textContent = `管理员：${data.data.username}`;
+                
+                // 加载分类列表
+                loadCategories();
+            } catch (error) {
+                console.error('认证检查失败:', error);
+                window.location.href = '/admin/index.html';
+            }
+        }
+        
+        // 加载分类列表
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/categories', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取分类列表失败');
+                }
+                
+                const data = await response.json();
+                
+                const tableBody = document.getElementById('categories-table-body');
+                tableBody.innerHTML = '';
+                
+                if (!data.data || data.data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">暂无分类数据</td></tr>';
+                    return;
+                }
+                
+                // 渲染分类列表并获取每个分类的模板数量
+                for (const category of data.data) {
+                    // 获取该分类下的模板数量
+                    let templateCount = '加载中...';
+                    try {
+                        const countResponse = await fetch(`/api/templates/count?category=${category.id}`, {
+                            credentials: 'include'
+                        });
+                        if (countResponse.ok) {
+                            const countData = await countResponse.json();
+                            templateCount = countData.data.count || 0;
+                        }
+                    } catch (error) {
+                        templateCount = '获取失败';
+                    }
+                    
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${category.id}</td>
+                        <td>${category.name}</td>
+                        <td>${category.description || ''}</td>
+                        <td>${templateCount}</td>
+                        <td>${new Date(category.created_at).toLocaleString()}</td>
+                        <td>
+                            <button class="button" onclick="editCategory(${category.id})">编辑</button>
+                            <button class="button button-danger" onclick="deleteCategory(${category.id})">删除</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+            } catch (error) {
+                console.error('加载分类列表失败:', error);
+                document.getElementById('categories-table-body').innerHTML = 
+                    '<tr><td colspan="6" style="text-align: center; color: red;">获取分类列表失败</td></tr>';
+            }
+        }
+        
+        // 打开创建分类对话框
+        function openCreateModal() {
+            editingCategoryId = null;
+            document.getElementById('modal-title').textContent = '新建分类';
+            document.getElementById('category-form').reset();
+            
+            document.getElementById('category-modal').style.display = 'flex';
+        }
+        
+        // 打开编辑分类对话框
+        async function editCategory(categoryId) {
+            try {
+                const response = await fetch(`/api/categories/${categoryId}`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取分类详情失败');
+                }
+                
+                const data = await response.json();
+                const category = data.data;
+                
+                editingCategoryId = categoryId;
+                document.getElementById('modal-title').textContent = '编辑分类';
+                
+                // 填充表单
+                document.getElementById('category-name').value = category.name;
+                document.getElementById('category-description').value = category.description || '';
+                
+                document.getElementById('category-modal').style.display = 'flex';
+            } catch (error) {
+                console.error('加载分类详情失败:', error);
+                alert('加载分类详情失败: ' + error.message);
+            }
+        }
+        
+        // 关闭分类对话框
+        function closeModal() {
+            document.getElementById('category-modal').style.display = 'none';
+        }
+        
+        // 保存分类
+        async function saveCategory(formData) {
+            try {
+                const url = editingCategoryId 
+                    ? `/api/categories/${editingCategoryId}`
+                    : '/api/categories';
+                
+                const method = editingCategoryId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: formData.get('name'),
+                        description: formData.get('description')
+                    }),
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || '保存分类失败');
+                }
+                
+                closeModal();
+                loadCategories();
+                
+                alert(editingCategoryId ? '分类更新成功' : '分类创建成功');
+            } catch (error) {
+                console.error('保存分类失败:', error);
+                alert('保存分类失败: ' + error.message);
+            }
+        }
+        
+        // 删除分类
+        async function deleteCategory(categoryId) {
+            if (!confirm('确定要删除这个分类吗？这可能会影响相关模板的分类显示！')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/categories/${categoryId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('删除分类失败');
+                }
+                
+                alert('分类已删除');
+                loadCategories();
+            } catch (error) {
+                console.error('删除分类失败:', error);
+                alert('删除分类失败: ' + error.message);
+            }
+        }
+        
+        // 退出登录
+        document.getElementById('logout-btn').addEventListener('click', async function() {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/admin/index.html';
+            } catch (error) {
+                console.error('退出失败:', error);
+            }
+        });
+        
+        // 绑定表单提交事件
+        document.getElementById('category-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            saveCategory(formData);
+        });
+        
+        // 绑定创建分类按钮
+        document.getElementById('create-category-btn').addEventListener('click', openCreateModal);
+        
+        // 页面加载完成后检查认证并加载数据
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html> 

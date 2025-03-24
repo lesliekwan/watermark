@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板管理 - 视频编辑器</title>
+    <link rel="stylesheet" href="/admin/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>视频编辑器</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/admin/dashboard.html">仪表盘</a></li>
+                <li><a href="/admin/users.html">用户管理</a></li>
+                <li><a href="/admin/videos.html">视频管理</a></li>
+                <li class="active"><a href="/admin/templates.html">模板管理</a></li>
+                <li><a href="/admin/categories.html">分类管理</a></li>
+                <li><a href="/admin/settings.html">系统设置</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>模板管理</h2>
+                <div class="header-right">
+                    <span id="admin-name">管理员：加载中...</span>
+                    <button class="logout-btn" id="logout-btn">退出登录</button>
+                </div>
+            </div>
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 class="card-title" style="margin-bottom: 0; border-bottom: none;">模板列表</h3>
+                    <div>
+                        <input type="text" placeholder="搜索模板..." id="search-template" style="padding: 8px; width: 200px; border: 1px solid #d9d9d9; border-radius: 4px; margin-right: 10px;">
+                        <button class="button button-primary" id="create-template-btn">新建模板</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>缩略图</th>
+                            <th>名称</th>
+                            <th>分类</th>
+                            <th>创建者</th>
+                            <th>收藏数</th>
+                            <th>点赞数</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="templates-table-body">
+                        <tr>
+                            <td colspan="9" style="text-align: center;">加载中...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagination" id="pagination">
+                    <!-- 分页控件将由JavaScript生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建/编辑模板对话框 -->
+    <div id="template-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 20px; border-radius: 8px; width: 600px; max-width: 90%;">
+            <h3 id="modal-title">新建模板</h3>
+            <form id="template-form">
+                <div class="form-group">
+                    <label for="template-name">模板名称</label>
+                    <input type="text" id="template-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="template-description">描述</label>
+                    <textarea id="template-description" name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="template-categories">分类</label>
+                    <select id="template-categories" name="categories" multiple style="height: 100px;">
+                        <!-- 分类选项将由JavaScript填充 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="template-thumbnail">缩略图</label>
+                    <input type="file" id="template-thumbnail" name="thumbnail" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="template-config">模板配置</label>
+                    <textarea id="template-config" name="config" rows="6" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="template-is-public" name="is_public" checked>
+                        公开模板
+                    </label>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="button" style="margin-right: 10px;" onclick="closeModal()">取消</button>
+                    <button type="submit" class="button button-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let editingTemplateId = null;
+        let categories = [];
+        
+        // 验证登录状态
+        async function checkAuth() {
+            try {
+                const response = await fetch('/api/auth/me', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                const data = await response.json();
+                if (!data.data.is_admin) {
+                    window.location.href = '/admin/index.html';
+                    return;
+                }
+                
+                // 显示管理员名称
+                document.getElementById('admin-name').textContent = `管理员：${data.data.username}`;
+                
+                // 加载分类列表
+                await loadCategories();
+                
+                // 加载模板列表
+                loadTemplates();
+            } catch (error) {
+                console.error('认证检查失败:', error);
+                window.location.href = '/admin/index.html';
+            }
+        }
+        
+        // 加载分类列表
+        async function loadCategories() {
+            try {
+                const response = await fetch('/api/categories', {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取分类列表失败');
+                }
+                
+                const data = await response.json();
+                categories = data.data;
+                
+                // 填充分类选择器
+                const categorySelect = document.getElementById('template-categories');
+                categorySelect.innerHTML = '';
+                
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('加载分类列表失败:', error);
+                alert('加载分类列表失败: ' + error.message);
+            }
+        }
+        
+        // 加载模板列表
+        async function loadTemplates(page = 1) {
+            try {
+                // 管理员可以看到所有模板，包括非公开的
+                const response = await fetch(`/api/templates?page=${page}&limit=10`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取模板列表失败');
+                }
+                
+                const data = await response.json();
+                
+                const tableBody = document.getElementById('templates-table-body');
+                tableBody.innerHTML = '';
+                
+                if (data.data.templates && data.data.templates.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="9" style="text-align: center;">暂无模板数据</td></tr>';
+                    return;
+                }
+                
+                // 渲染模板列表
+                data.data.templates.forEach(template => {
+                    const tr = document.createElement('tr');
+                    
+                    // 获取分类名称
+                    const categoryNames = template.categories && template.categories.length > 0 
+                        ? template.categories.map(c => c.name).join(', ')
+                        : '无分类';
+                    
+                    tr.innerHTML = `
+                        <td>${template.id}</td>
+                        <td>
+                            ${template.thumbnail_path 
+                                ? `<img src="/uploads/${template.thumbnail_path}" alt="${template.name}" style="width: 80px; height: 45px; object-fit: cover;">` 
+                                : '无缩略图'}
+                        </td>
+                        <td>${template.name}</td>
+                        <td>${categoryNames}</td>
+                        <td>${template.created_by ? `用户ID: ${template.created_by}` : '系统'}</td>
+                        <td>${template.favorites_count || 0}</td>
+                        <td>${template.likes_count || 0}</td>
+                        <td>
+                            <span style="color: ${template.is_public ? 'green' : 'orange'}">
+                                ${template.is_public ? '公开' : '私有'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="button" onclick="editTemplate(${template.id})">编辑</button>
+                            <button class="button button-danger" onclick="deleteTemplate(${template.id})">删除</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+                
+                // 渲染分页
+                if (data.data.pagination) {
+                    renderPagination(data.data.pagination);
+                }
+            } catch (error) {
+                console.error('加载模板列表失败:', error);
+                document.getElementById('templates-table-body').innerHTML = 
+                    '<tr><td colspan="9" style="text-align: center; color: red;">获取模板列表失败</td></tr>';
+            }
+        }
+        
+        // 渲染分页控件
+        function renderPagination(pagination) {
+            const paginationElement = document.getElementById('pagination');
+            paginationElement.innerHTML = '';
+            
+            // 上一页按钮
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '上一页';
+            prevButton.disabled = pagination.page <= 1;
+            if (!prevButton.disabled) {
+                prevButton.onclick = () => loadTemplates(pagination.page - 1);
+            }
+            paginationElement.appendChild(prevButton);
+            
+            // 页码按钮
+            for (let i = 1; i <= pagination.totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = i === pagination.page ? 'active' : '';
+                pageButton.onclick = () => loadTemplates(i);
+                paginationElement.appendChild(pageButton);
+            }
+            
+            // 下一页按钮
+            const nextButton = document.createElement('button');
+            nextButton.textContent = '下一页';
+            nextButton.disabled = pagination.page >= pagination.totalPages;
+            if (!nextButton.disabled) {
+                nextButton.onclick = () => loadTemplates(pagination.page + 1);
+            }
+            paginationElement.appendChild(nextButton);
+        }
+        
+        // 打开创建模板对话框
+        function openCreateModal() {
+            editingTemplateId = null;
+            document.getElementById('modal-title').textContent = '新建模板';
+            document.getElementById('template-form').reset();
+            document.getElementById('template-config').value = JSON.stringify({
+                watermarks: [],
+                filters: [],
+                transitions: []
+            }, null, 2);
+            document.getElementById('template-is-public').checked = true;
+            
+            document.getElementById('template-modal').style.display = 'flex';
+        }
+        
+        // 打开编辑模板对话框
+        async function editTemplate(templateId) {
+            try {
+                const response = await fetch(`/api/templates/${templateId}`, {
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('获取模板详情失败');
+                }
+                
+                const data = await response.json();
+                const template = data.data;
+                
+                editingTemplateId = templateId;
+                document.getElementById('modal-title').textContent = '编辑模板';
+                
+                // 填充表单
+                document.getElementById('template-name').value = template.name;
+                document.getElementById('template-description').value = template.description || '';
+                document.getElementById('template-config').value = typeof template.config === 'string' 
+                    ? template.config 
+                    : JSON.stringify(template.config, null, 2);
+                document.getElementById('template-is-public').checked = template.is_public;
+                
+                // 选择分类
+                const categorySelect = document.getElementById('template-categories');
+                Array.from(categorySelect.options).forEach(option => {
+                    option.selected = template.categories && template.categories.some(c => c.id == option.value);
+                });
+                
+                document.getElementById('template-modal').style.display = 'flex';
+            } catch (error) {
+                console.error('加载模板详情失败:', error);
+                alert('加载模板详情失败: ' + error.message);
+            }
+        }
+        
+        // 关闭模板对话框
+        function closeModal() {
+            document.getElementById('template-modal').style.display = 'none';
+        }
+        
+        // 保存模板
+        async function saveTemplate(formData) {
+            try {
+                const url = editingTemplateId 
+                    ? `/api/templates/${editingTemplateId}`
+                    : '/api/templates';
+                
+                const method = editingTemplateId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('保存模板失败');
+                }
+                
+                closeModal();
+                loadTemplates();
+                
+                alert(editingTemplateId ? '模板更新成功' : '模板创建成功');
+            } catch (error) {
+                console.error('保存模板失败:', error);
+                alert('保存模板失败: ' + error.message);
+            }
+        }
+        
+        // 删除模板
+        async function deleteTemplate(templateId) {
+            if (!confirm('确定要删除这个模板吗？此操作不可恢复！')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/templates/${templateId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error('删除模板失败');
+                }
+                
+                alert('模板已删除');
+                loadTemplates();
+            } catch (error) {
+                console.error('删除模板失败:', error);
+                alert('删除模板失败: ' + error.message);
+            }
+        }
+        
+        // 退出登录
+        document.getElementById('logout-btn').addEventListener('click', async function() {
+            try {
+                await fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                window.location.href = '/admin/index.html';
+            } catch (error) {
+                console.error('退出失败:', error);
+            }
+        });
+        
+        // 搜索功能
+        document.getElementById('search-template').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#templates-table-body tr');
+            
+            rows.forEach(row => {
+                const title = row.cells[2]?.textContent.toLowerCase() || '';
+                
+                if (title.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // 绑定表单提交事件
+        document.getElementById('template-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            try {
+                // 检查配置格式
+                const configText = document.getElementById('template-config').value;
+                JSON.parse(configText); // 只是验证格式，不使用结果
+                
+                // 创建FormData
+                const formData = new FormData(this);
+                
+                // 添加其他字段
+                formData.append('is_public', document.getElementById('template-is-public').checked ? 1 : 0);
+                
+                // 将选中的分类转为JSON
+                const categorySelect = document.getElementById('template-categories');
+                const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => option.value);
+                formData.append('categories', JSON.stringify(selectedCategories));
+                
+                // 保存模板
+                saveTemplate(formData);
+            } catch (error) {
+                if (error instanceof SyntaxError) {
+                    alert('模板配置必须是有效的JSON格式');
+                } else {
+                    alert('提交表单失败: ' + error.message);
+                }
+            }
+        });
+        
+        // 绑定创建模板按钮
+        document.getElementById('create-template-btn').addEventListener('click', openCreateModal);
+        
+        // 页面加载完成后检查认证并加载数据
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>我的作品 - 视频编辑器</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            background: linear-gradient(180deg, #1a1c2e 0%, #2d2f45 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="flex items-center justify-between px-4 py-3 bg-black/20">
+        <button class="text-white">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </button>
+        <h1 class="text-lg font-medium">我的作品</h1>
+        <button class="text-white">
+            <i class="fas fa-ellipsis-v text-xl"></i>
+        </button>
+    </div>
+
+    <!-- 作品分类 -->
+    <div class="px-4 py-2 flex space-x-4">
+        <button class="px-4 py-1 bg-blue-500 text-white rounded-full">全部</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full">已发布</button>
+        <button class="px-4 py-1 bg-white/10 text-white/80 rounded-full">草稿</button>
+    </div>
+
+    <!-- 作品列表 -->
+    <div class="p-4 grid grid-cols-2 gap-4">
+        <!-- 作品1 -->
+        <div class="bg-white/10 rounded-xl overflow-hidden">
+            <div class="aspect-video relative">
+                <img src="https://images.pexels.com/photos/3183183/pexels-photo-3183183.jpeg" 
+                     alt="作品预览" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div class="absolute bottom-2 right-2 bg-black/50 rounded-full px-2 py-1 text-xs">
+                    01:25
+                </div>
+            </div>
+            <div class="p-3">
+                <h3 class="font-medium text-sm">企业宣传片</h3>
+                <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-white/60">2024-05-12</span>
+                    <div class="flex space-x-2">
+                        <button class="text-white/60">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-white/60">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作品2 -->
+        <div class="bg-white/10 rounded-xl overflow-hidden">
+            <div class="aspect-video relative">
+                <img src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg" 
+                     alt="作品预览" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div class="absolute bottom-2 right-2 bg-black/50 rounded-full px-2 py-1 text-xs">
+                    02:47
+                </div>
+            </div>
+            <div class="p-3">
+                <h3 class="font-medium text-sm">旅行日记</h3>
+                <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-white/60">2024-05-09</span>
+                    <div class="flex space-x-2">
+                        <button class="text-white/60">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-white/60">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作品3 (草稿) -->
+        <div class="bg-white/10 rounded-xl overflow-hidden">
+            <div class="aspect-video relative">
+                <img src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg" 
+                     alt="作品预览" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div class="absolute top-2 left-2 bg-yellow-500/80 rounded-full px-2 py-1 text-xs">
+                    草稿
+                </div>
+                <div class="absolute bottom-2 right-2 bg-black/50 rounded-full px-2 py-1 text-xs">
+                    00:58
+                </div>
+            </div>
+            <div class="p-3">
+                <h3 class="font-medium text-sm">产品演示</h3>
+                <div class="flex justify-between items-center mt-2">
+                    <span class="text-xs text-white/60">2024-05-05</span>
+                    <div class="flex space-x-2">
+                        <button class="text-white/60">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-white/60">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
